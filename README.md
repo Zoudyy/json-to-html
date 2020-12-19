@@ -2,7 +2,7 @@
 I coded it so that you can generate a dom from json!
 
 Example:
-```json
+```js
 [
     {
         tag: "head",
