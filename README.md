@@ -1,7 +1,10 @@
 # json-to-html
-I coded it so that you can generate a dom from json!
+I coded it so that you can generate html from json!
 
-Example:
+Output/End Result:
+[example](https://github.com/Zoudyy/json-to-html/blob/main/example_image.png?raw=true)
+
+JSON:
 ```js
 [
     {
@@ -44,6 +47,3 @@ Example:
         ]
     }
 ]```
-
-Output:
-[img](example_image.png)
