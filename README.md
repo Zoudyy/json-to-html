@@ -2,7 +2,7 @@
 I coded it so that you can generate html from json!
 
 Output/End Result:
-[example](https://github.com/Zoudyy/json-to-html/blob/main/example_image.png?raw=true)
+[https://github.com/Zoudyy/json-to-html/blob/main/example_image.png](example)
 
 JSON:
 ```js
