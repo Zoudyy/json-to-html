@@ -1,0 +1,58 @@
+declare function 'load_from_html' with 1 argument 'data'
+    if 'load_from_html' argument 'data' is not instance of 'Array' then throw a error 'Provided a non-array object.'
+    declare constant 'dom' with empty document
+
+    declare function 'parseElement' with 1 argument 'raw_data'
+        declare variable '_element' containing a new element provided a variable 'raw_data.tag' or a 'p' tag if it doesn't exist
+        declare let 'is_a_link_element' with value 'false'
+
+        if 'raw_data.text' exists
+            set '_element.innerText' to 'raw_data.text' as a string
+
+        if 'raw_data.content' exists
+            set '_element.innerHTML' to 'raw_data.content' as a string
+
+        if 'raw_data.id' exists
+            set '_element.id' to 'raw_data.id' as a string
+
+        if 'raw_data.src' exists
+            set '_element.src' to 'raw_data.src' as a string
+
+        if 'raw_data.link' exists
+            set 'is_a_link_element' to 'true' (this was a temporary variable to fix issues with href not working)
+
+        if 'raw_data.size' exists
+            if 'raw_data.size' has a value at index '0'
+                set '_element.width' to 'raw_data.size' at index '0'
+            if 'raw_data.size' has a value at index '1'
+                set '_element.height' to 'raw_data.size' at index '1'
+
+        if 'raw_data.classes' exists
+            loop while 'i' is less than 'raw_data.classes.length'
+              add 'raw_data.classes' at index 'i' to '_element.classList'
+
+        if 'raw_data.children' exists
+            loop while 'i' is less than 'raw_data.children.length'
+                append (call 'parseElement' on value 'raw_data.children' at index 'i') to '_element.children'
+
+        if 'is_a_link_element' has value 'true'
+            declare variable '_a' containing a new element with tag 'a'
+            set '_a.href' to 'raw_data.link'
+            append '_a' to '_element.children'
+
+        return with variable '_element'
+    end of 'parseElement'
+
+    loop while 'i' is less than 'data.length'
+        declare variable 'ele' with value of (call 'parseElement' on value 'data' at index 'i')
+        if 'ele.tagName' is equal to 'HEAD'
+            declare variable 'ele_child_head' with value 'ele.children'
+            loop while 'j' is less than 'ele_child_head.length'
+                if '('ele_child_head' at index 'j').tagName' is equal to 'TITLE'
+                    set 'dom.title' to '('ele_child_head' at index 'j').innerText'
+                    break from loop
+        if 'ele.tagName' is equal to 'BODY'
+            set 'dom.body' to 'ele'
+
+    return with variable 'dom'
+end of 'load_from_html'
